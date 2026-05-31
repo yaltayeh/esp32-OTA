@@ -73,7 +73,6 @@ void check_cloud_updates_task(void *pvParameter) {
     while (1) {
         ESP_LOGI(TAG, "Checking CloudFront CDN for updates (Periodic Check)...");
 
-        char version_buffer[32] = {0};
         struct version_info server_version = {0, 0, 0};
 
         esp_http_client_config_t config = {
@@ -87,32 +86,22 @@ void check_cloud_updates_task(void *pvParameter) {
         if (err == ESP_OK) {
             esp_http_client_fetch_headers(client);
             // قراءة رقم النسخة كنص (String) القادم من سكريبت الـ Pipeline
-            int read_len = esp_http_client_read(client, version_buffer, sizeof(version_buffer) - 1);
-            if (read_len > 0) {
-                version_buffer[read_len] = '\0'; // إغلاق النص
-                
-                // تحويل النص (مثال "1.2.3") إلى الـ struct الخاص بك بأمان
-                int parsed = sscanf(version_buffer, "%d.%d.%d", 
-                                    (int *)&server_version.major, 
-                                    (int *)&server_version.minor, 
-                                    (int *)&server_version.patch);
+            int read_len = esp_http_client_read(client, (void *)&server_version, sizeof(server_version));
+            if (read_len == 3) {
+                ESP_LOGI(TAG, "Current Version: %d.%d.%d | Cloud Version: %d.%d.%d", 
+                            current_version.major, current_version.minor, current_version.patch, 
+                            server_version.major, server_version.minor, server_version.patch);
 
-                if (parsed == 3) { // التأكد من قراءة الثلاثة أرقام بنجاح
-                    ESP_LOGI(TAG, "Current Version: %d.%d.%d | Cloud Version: %d.%d.%d", 
-                             current_version.major, current_version.minor, current_version.patch, 
-                             server_version.major, server_version.minor, server_version.patch);
-
-                    // مقارنة الإصدار الحالي بالإصدار السحابي
-                    if (memcmp(&current_version, &server_version, sizeof(server_version)) != 0) {
-                        ESP_LOGI(TAG, "New cloud version found! Initiating HTTPS OTA...");
-                        esp_http_client_cleanup(client);
-                        execute_cloud_ota();
-                    } else {
-                        ESP_LOGI(TAG, "System is up-to-date.");
-                    }
+                // مقارنة الإصدار الحالي بالإصدار السحابي
+                if (memcmp(&current_version, &server_version, sizeof(server_version)) != 0) {
+                    ESP_LOGI(TAG, "New cloud version found! Initiating HTTPS OTA...");
+                    esp_http_client_cleanup(client);
+                    execute_cloud_ota();
                 } else {
-                    ESP_LOGE(TAG, "Failed to parse version string from server: %s", version_buffer);
+                    ESP_LOGI(TAG, "System is up-to-date.");
                 }
+            } else {
+                ESP_LOGE(TAG, "Failed to read version info from CloudFront CDN. Read length: %d", read_len);
             }
         } else {
             ESP_LOGE(TAG, "Failed to connect to CloudFront CDN. Error: %s", esp_err_to_name(err));
