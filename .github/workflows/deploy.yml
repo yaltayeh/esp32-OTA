@@ -19,15 +19,16 @@ jobs:
       # الخطوة الثانية: تشغيل البناء باستخدام بيئة ESP-IDF المثبتة عبر Ansible
       - name: Compile ESP32-S3 Firmware
         run: |
-          # تفعيل بيئة ESP-IDF المثبتة عبر EIM CLI
-          . /home/ubuntu/.espressif/v5.4.2/esp-idf/install.sh
-          # تفعيل متغيرات البيئة للـ Compiler الخاص بـ Espressif
-          . /home/ubuntu/.espressif/v5.4.2/esp-idf//export.sh
+          # 1. تحديد مسار الإطار البرمجي الصحيح يدوياً لمنع تداخل الـ GitHub Runner
+          export IDF_PATH="/home/ubuntu/.espressif/v5.4.2/esp-idf"
           
-          # تنظيف أي بقايا بناء سابقة للتأكد من سلامة النظام
+          # 2. تفعيل متغيرات البيئة للـ Compiler الخاص بـ Espressif مباشرة
+          . $IDF_PATH/export.sh
+          
+          # 3. تنظيف أي بقايا بناء سابقة للتأكد من سلامة النظام
           idf.py fullclean
           
-          # بناء السوفتوير الجديد لمعالج ESP32-S3
+          # 4. بناء السوفتوير الجديد لمعالج ESP32-S3
           idf.py build
 
       # الخطوة الثالثة: تشغيل سكريبت النشر لرفع الملفات إلى AWS S3
