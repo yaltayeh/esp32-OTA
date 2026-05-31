@@ -11,7 +11,7 @@ REGION="eu-north-1" # المنطقة الخاصة بالسيرفر والـ S3
 
 BUILD_DIR="build"
 VERSION_FILE="$BUILD_DIR/version.bin"
-FIRMWARE_FILE="$BUILD_DIR/firmware.bin"
+FIRMWARE_FILE="$BUILD_DIR/test_OTA.bin"
 
 echo "==============================================="
 echo " Starting After-Build Deployment Process "
