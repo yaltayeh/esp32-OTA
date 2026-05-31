@@ -20,7 +20,7 @@ jobs:
       - name: Compile ESP32-S3 Firmware
         run: |
           # تفعيل متغيرات البيئة للـ Compiler الخاص بـ Espressif
-          . /home/ubuntu/esp/esp-idf/export.sh
+          . /home/ubuntu/.espressif/v5.4.2/esp-idf//export.sh
           
           # تنظيف أي بقايا بناء سابقة للتأكد من سلامة النظام
           idf.py fullclean
