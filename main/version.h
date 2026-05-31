@@ -8,4 +8,4 @@ struct __attribute__((packed)) version_info {
 	uint8_t patch;
 };
 
-#define CURRENT_VERSION {0, 0, 1}
+#define CURRENT_VERSION {0, 0, 2}

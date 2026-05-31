@@ -144,7 +144,7 @@ void app_main(void) {
     led_strip_clear(led_strip); 
 
     while (1) {
-        led_strip_set_pixel(led_strip, 0, 255, 0, 0);
+        led_strip_set_pixel(led_strip, 0, 100, 0, 100);
         led_strip_refresh(led_strip);
         vTaskDelay(pdMS_TO_TICKS(5000));
 
