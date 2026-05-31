@@ -9,7 +9,7 @@ set -e
 BUCKET_NAME="esp32-ota-storage-bin-2026" 
 REGION="eu-north-1" # المنطقة الخاصة بالسيرفر والـ S3
 
-BUILD_DIR="../build"
+BUILD_DIR="build"
 VERSION_FILE="$BUILD_DIR/version.bin"
 FIRMWARE_FILE="$BUILD_DIR/firmware.bin"
 
@@ -18,7 +18,7 @@ echo " Starting After-Build Deployment Process "
 echo "==============================================="
 
 # 1. استخراج رقم الإصدار وتوليد ملف version.bin
-python3 ./update_version.py ../main/version.h $VERSION_FILE
+python3 ./scripts/update_version.py main/version.h $VERSION_FILE
 
 # 2. التأكد من أن ملفات البناء موجودة وسليمة
 echo "--> [2/3] Verifying build binaries..."

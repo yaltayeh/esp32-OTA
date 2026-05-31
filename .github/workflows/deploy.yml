@@ -23,7 +23,7 @@ jobs:
           . /home/ubuntu/.espressif/v5.4.2/esp-idf/export.sh
           
           # تنظيف أي بقايا بناء سابقة للتأكد من سلامة النظام
-          idf.py fullclean
+          # idf.py fullclean
           
           # بناء السوفتوير الجديد لمعالج ESP32-S3
           idf.py build
