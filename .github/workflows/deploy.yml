@@ -9,7 +9,7 @@ on:
 jobs:
   build-and-deploy:
     # 2. السطر السحري: نخبر جيتهاب أن يشغل البناء على السيرفر الخاص بك الذي يحمل هذا الوسم
-    runs-on: [self-hosted, linux, arm64, ESP32-Ansible-Runner]
+    runs-on: [self-hosted, linux, arm64]
 
     steps:
       # الخطوة الأولى: سحب الكود الجديد من المستودع إلى داخل السيرفر
