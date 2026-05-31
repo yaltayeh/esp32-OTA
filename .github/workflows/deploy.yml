@@ -19,6 +19,8 @@ jobs:
       # الخطوة الثانية: تشغيل البناء باستخدام بيئة ESP-IDF المثبتة عبر Ansible
       - name: Compile ESP32-S3 Firmware
         run: |
+          # تفعيل بيئة ESP-IDF المثبتة عبر EIM CLI
+          . /home/ubuntu/.espressif/v5.4.2/esp-idf/install.sh
           # تفعيل متغيرات البيئة للـ Compiler الخاص بـ Espressif
           . /home/ubuntu/.espressif/v5.4.2/esp-idf//export.sh
           
