@@ -60,7 +60,7 @@ If you have ESP-IDF v5.4.2 installed locally and a device connected:
 ```bash
 idf.py build
 ```
-This clean compiles the source code, embeds the TLS root certificate `ota_server_cert.pem` directly into the binary, and compiles the ESP32 app partition executable.
+This compiles the source code, embeds the TLS root certificate `ota_server_cert.pem` directly into the binary, and produces the ESP32 app partition executable.
 
 ### 2. Flash and Monitor
 ```bash
