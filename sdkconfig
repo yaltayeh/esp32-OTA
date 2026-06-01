@@ -3591,6 +3591,19 @@ CONFIG_WL_SECTOR_SIZE_4096=y
 # default:
 CONFIG_WL_SECTOR_SIZE=4096
 # end of Wear Levelling
+
+#
+# Cloud OTA Configuration
+#
+# default:
+CONFIG_WIFI_SSID="Spider"
+# default:
+CONFIG_WIFI_PASSWORD="S147@369s"
+# default:
+CONFIG_CDN_SERVER_VERSION_URL="https://d2bpgfntnplhed.cloudfront.net/version.bin"
+# default:
+CONFIG_CDN_SERVER_FIRMWARE_URL="https://d2bpgfntnplhed.cloudfront.net/firmware.bin"
+# end of Cloud OTA Configuration
 # end of Component config
 
 # default:

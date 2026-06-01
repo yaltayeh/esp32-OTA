@@ -5,9 +5,9 @@
 #include "esp_event.h"
 #include "esp_log.h"
 #include "esp_wifi.h"
+#include <stdint.h>
+#include <string.h>
 
-#define WIFI_SSID      "Spider"
-#define WIFI_PASS      "S147@369s"
 
 static const char *TAG = "WIFI";
 
@@ -49,8 +49,8 @@ void wifi_init_sta(void) {
 
     wifi_config_t wifi_config = {
         .sta = {
-            .ssid = WIFI_SSID,
-            .password = WIFI_PASS,
+            .ssid = CONFIG_WIFI_SSID,
+            .password = CONFIG_WIFI_PASSWORD,
         },
     };
     esp_wifi_set_mode(WIFI_MODE_STA);

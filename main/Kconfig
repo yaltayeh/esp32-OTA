@@ -1,0 +1,27 @@
+menu "Cloud OTA Configuration"
+
+    config WIFI_SSID
+        string "WiFi SSID"
+        default "Spider"
+        help
+            SSID of the WiFi network to connect to.
+
+    config WIFI_PASSWORD
+        string "WiFi Password"
+        default "S147@369s"
+        help
+            Password of the WiFi network.
+
+    config CDN_SERVER_VERSION_URL
+        string "CDN Server Version URL"
+        default "https://d2bpgfntnplhed.cloudfront.net/version.bin"
+        help
+            URL for fetching the version binary from CloudFront CDN.
+
+    config CDN_SERVER_FIRMWARE_URL
+        string "CDN Server Firmware URL"
+        default "https://d2bpgfntnplhed.cloudfront.net/firmware.bin"
+        help
+            URL for fetching the firmware binary from CloudFront CDN.
+
+endmenu

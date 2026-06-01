@@ -15,9 +15,6 @@ struct version_info current_version = CURRENT_VERSION;
 
 #define BLINK_GPIO 48 
 
-#define CDN_SERVER_VERSION_URL  "https://d2bpgfntnplhed.cloudfront.net/version.bin"
-#define CDN_SERVER_FIRMWARE_URL "https://d2bpgfntnplhed.cloudfront.net/firmware.bin"
-
 static const char *TAG = "CLOUD_OTA";
 
 extern const uint8_t ota_server_cert_pem_start[] asm("_binary_ota_server_cert_pem_start");
@@ -29,7 +26,7 @@ void execute_cloud_ota(void) {
     ESP_LOGI(TAG, "Starting Secure HTTPS Cloud OTA Update...");
 
     esp_http_client_config_t config = {
-        .url = CDN_SERVER_FIRMWARE_URL,
+        .url = CONFIG_CDN_SERVER_FIRMWARE_URL,
         .cert_pem = (char *)ota_server_cert_pem_start,
         .keep_alive_enable = true,
     };
@@ -74,7 +71,7 @@ void check_cloud_updates_task(void *pvParameter) {
         struct version_info server_version = {0, 0, 0};
 
         esp_http_client_config_t config = {
-            .url = CDN_SERVER_VERSION_URL,
+            .url = CONFIG_CDN_SERVER_VERSION_URL,
             .cert_pem = (char *)ota_server_cert_pem_start, 
             .timeout_ms = 5000,
         };
