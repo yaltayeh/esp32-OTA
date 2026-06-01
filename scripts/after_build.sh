@@ -7,7 +7,13 @@ set -e
 # === [إعداد المتغيرات] ===
 # استبدل هذا الاسم باسم الـ Bucket الذي أنشأته في الـ Terraform
 BUCKET_NAME="esp32-ota-storage-bin-2026" 
-REGION="eu-north-1" # المنطقة الخاصة بالسيرفر والـ S3
+# جلب المنطقة ديناميكياً من بيانات خادم EC2 (IMDSv2) أو استخدام القيمة الافتراضية
+TOKEN=$(curl -s -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 60" 2>/dev/null || true)
+if [ -n "$TOKEN" ]; then
+    REGION=$(curl -s -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/placement/region 2>/dev/null || echo "eu-north-1")
+else
+    REGION="eu-north-1"
+fi
 
 BUILD_DIR="build"
 VERSION_FILE="$BUILD_DIR/version.bin"

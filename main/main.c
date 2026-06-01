@@ -102,8 +102,8 @@ void check_cloud_updates_task(void *pvParameter) {
         
         esp_http_client_cleanup(client);
 
-        ESP_LOGI(TAG, "Waiting 30 seconds before next check...");
-        vTaskDelay(pdMS_TO_TICKS(30000)); 
+        ESP_LOGI(TAG, "Waiting %d seconds before next check...", CONFIG_OTA_POLLING_INTERVAL_SEC);
+        vTaskDelay(pdMS_TO_TICKS(CONFIG_OTA_POLLING_INTERVAL_SEC * 1000)); 
     }    
 }
 
