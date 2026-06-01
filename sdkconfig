@@ -3603,6 +3603,8 @@ CONFIG_WIFI_PASSWORD="S147@369s"
 CONFIG_CDN_SERVER_VERSION_URL="https://d2bpgfntnplhed.cloudfront.net/version.bin"
 # default:
 CONFIG_CDN_SERVER_FIRMWARE_URL="https://d2bpgfntnplhed.cloudfront.net/firmware.bin"
+# default:
+CONFIG_OTA_POLLING_INTERVAL_SEC=30
 # end of Cloud OTA Configuration
 # end of Component config
 
