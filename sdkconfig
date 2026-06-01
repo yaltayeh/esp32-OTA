@@ -3600,7 +3600,7 @@ CONFIG_WIFI_SSID="Spider"
 # default:
 CONFIG_WIFI_PASSWORD="S147@369s"
 # default:
-CONFIG_CDN_SERVER_VERSION_URL="https://d2bpgfntnplhed.cloudfront.net/version.bin"
+CONFIG_CDN_SERVER_VERSION_URL="https://d2bpgfntnplhed.cloudfront.net/version.txt"
 # default:
 CONFIG_CDN_SERVER_FIRMWARE_URL="https://d2bpgfntnplhed.cloudfront.net/firmware.bin"
 # default:

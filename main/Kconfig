@@ -14,9 +14,9 @@ menu "Cloud OTA Configuration"
 
     config CDN_SERVER_VERSION_URL
         string "CDN Server Version URL"
-        default "https://d2bpgfntnplhed.cloudfront.net/version.bin"
+        default "https://d2bpgfntnplhed.cloudfront.net/version.txt"
         help
-            URL for fetching the version binary from CloudFront CDN.
+            URL for fetching the plain-text version descriptor from CloudFront CDN.
 
     config CDN_SERVER_FIRMWARE_URL
         string "CDN Server Firmware URL"
