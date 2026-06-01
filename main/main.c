@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include <string.h>
+#include "esp_random.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "esp_system.h"
@@ -14,14 +15,11 @@ struct version_info current_version = CURRENT_VERSION;
 
 #define BLINK_GPIO 48 
 
-// === [إعداد روابط الـ CDN السحابية الجديدة] ===
-// استبدل xxxxx.cloudfront.net برابط الـ CloudFront الخاص بك الناتج من الـ Terraform
 #define CDN_SERVER_VERSION_URL  "https://d2bpgfntnplhed.cloudfront.net/version.bin"
 #define CDN_SERVER_FIRMWARE_URL "https://d2bpgfntnplhed.cloudfront.net/firmware.bin"
 
 static const char *TAG = "CLOUD_OTA";
 
-// المرجعية لملف الشهادة الأمنية المدمجة في الـ Binary
 extern const uint8_t ota_server_cert_pem_start[] asm("_binary_ota_server_cert_pem_start");
 extern const uint8_t ota_server_cert_pem_end[]   asm("_binary_ota_server_cert_pem_end");
 
@@ -32,7 +30,7 @@ void execute_cloud_ota(void) {
 
     esp_http_client_config_t config = {
         .url = CDN_SERVER_FIRMWARE_URL,
-        .cert_pem = (char *)ota_server_cert_pem_start, // حقن شهادة أمازون لتفعيل الـ HTTPS الآمن
+        .cert_pem = (char *)ota_server_cert_pem_start,
         .keep_alive_enable = true,
     };
 
@@ -77,7 +75,7 @@ void check_cloud_updates_task(void *pvParameter) {
 
         esp_http_client_config_t config = {
             .url = CDN_SERVER_VERSION_URL,
-            .cert_pem = (char *)ota_server_cert_pem_start, // حماية فحص النسخة أيضاً بـ HTTPS
+            .cert_pem = (char *)ota_server_cert_pem_start, 
             .timeout_ms = 5000,
         };
         esp_http_client_handle_t client = esp_http_client_init(&config);
@@ -85,14 +83,12 @@ void check_cloud_updates_task(void *pvParameter) {
         esp_err_t err = esp_http_client_open(client, 0);
         if (err == ESP_OK) {
             esp_http_client_fetch_headers(client);
-            // قراءة رقم النسخة كنص (String) القادم من سكريبت الـ Pipeline
             int read_len = esp_http_client_read(client, (void *)&server_version, sizeof(server_version));
             if (read_len == 3) {
                 ESP_LOGI(TAG, "Current Version: %d.%d.%d | Cloud Version: %d.%d.%d", 
                             current_version.major, current_version.minor, current_version.patch, 
                             server_version.major, server_version.minor, server_version.patch);
 
-                // مقارنة الإصدار الحالي بالإصدار السحابي
                 if (memcmp(&current_version, &server_version, sizeof(server_version)) != 0) {
                     ESP_LOGI(TAG, "New cloud version found! Initiating HTTPS OTA...");
                     esp_http_client_cleanup(client);
@@ -124,7 +120,6 @@ void app_main(void) {
 
     wifi_init_sta();
     
-    // تعديل اسم ومهمة الـ Task لتشير إلى الفحص السحابي السليم
     xTaskCreate(&check_cloud_updates_task, "check_cloud_updates", 1024 * 8, NULL, 5, NULL);
 
     ESP_LOGI(TAG, "==========================================");
@@ -143,21 +138,14 @@ void app_main(void) {
     ESP_ERROR_CHECK(led_strip_new_rmt_device(&strip_config, &rmt_config, &led_strip));
     led_strip_clear(led_strip); 
 
+    int color = 0;
     while (1) {
-        led_strip_set_pixel(led_strip, 0, 127, 0, 0);
+        color = esp_random();
+        uint8_t r = (color >> 16) & 0xFF;
+        uint8_t g = (color >> 8) & 0xFF;
+        uint8_t b = color & 0xFF;
+        led_strip_set_pixel(led_strip, 0, r, g, b);
         led_strip_refresh(led_strip);
-        vTaskDelay(pdMS_TO_TICKS(1000));
-
-        led_strip_set_pixel(led_strip, 0, 0, 127, 0);
-        led_strip_refresh(led_strip);
-        vTaskDelay(pdMS_TO_TICKS(1000));
-
-        led_strip_set_pixel(led_strip, 0, 0, 0, 127);
-        led_strip_refresh(led_strip);
-        vTaskDelay(pdMS_TO_TICKS(1000));
-
-        led_strip_clear(led_strip);
-        led_strip_refresh(led_strip);
-        vTaskDelay(pdMS_TO_TICKS(2000));
+        vTaskDelay(pdMS_TO_TICKS(400));
     }
 }
