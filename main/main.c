@@ -144,12 +144,20 @@ void app_main(void) {
     led_strip_clear(led_strip); 
 
     while (1) {
-        led_strip_set_pixel(led_strip, 0, 100, 0, 100);
+        led_strip_set_pixel(led_strip, 0, 127, 0, 0);
         led_strip_refresh(led_strip);
-        vTaskDelay(pdMS_TO_TICKS(5000));
+        vTaskDelay(pdMS_TO_TICKS(1000));
+
+        led_strip_set_pixel(led_strip, 0, 0, 127, 0);
+        led_strip_refresh(led_strip);
+        vTaskDelay(pdMS_TO_TICKS(1000));
+
+        led_strip_set_pixel(led_strip, 0, 0, 0, 127);
+        led_strip_refresh(led_strip);
+        vTaskDelay(pdMS_TO_TICKS(1000));
 
         led_strip_clear(led_strip);
         led_strip_refresh(led_strip);
-        vTaskDelay(pdMS_TO_TICKS(5000));
+        vTaskDelay(pdMS_TO_TICKS(2000));
     }
 }
